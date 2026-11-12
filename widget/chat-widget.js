@@ -227,6 +227,7 @@
         history.push({ role: 'assistant', content: out.data.reply });
         history = history.slice(-MAX_HISTORY);
         saveHistory();
+        if (out.data.intent === 'track') showTrackForm(out.data.reference);
         if (out.data.handoff && out.data.handoff.url) showHandoff(out.data.handoff.url);
         document.dispatchEvent(new CustomEvent('bracescripts:meta', {
           detail: { provider: out.data.meta && out.data.meta.provider }
@@ -243,6 +244,85 @@
       pending.remove();
       setBusy(false);
       addMessage('Could not reach the server. Check your connection and try again.', 'error');
+    });
+  }
+
+  // Reference + phone mini-form. The phone goes to /status in the same request
+  // that checks the order, and never to the model.
+  function showTrackForm(prefillReference) {
+    var li = el('li', 'bs-msg bs-msg--note');
+    var form2 = document.createElement('form');
+    form2.className = 'bs-track';
+
+    var ref = document.createElement('input');
+    ref.type = 'text';
+    ref.placeholder = 'Reference';
+    ref.maxLength = 24;
+    ref.required = true;
+    ref.value = typeof prefillReference === 'string' ? prefillReference : '';
+    ref.setAttribute('aria-label', 'Reference number');
+
+    var phone = document.createElement('input');
+    phone.type = 'tel';
+    phone.inputMode = 'tel';
+    phone.placeholder = 'Phone number';
+    phone.maxLength = 20;
+    phone.required = true;
+    phone.setAttribute('aria-label', 'Phone number');
+
+    var go = document.createElement('button');
+    go.type = 'submit';
+    go.className = 'bs-send';
+    go.textContent = 'Check';
+
+    var msg = el('p', 'bs-track-msg');
+
+    form2.appendChild(ref);
+    form2.appendChild(phone);
+    form2.appendChild(go);
+    li.appendChild(form2);
+    li.appendChild(msg);
+    log.appendChild(li);
+    log.scrollTop = log.scrollHeight;
+    ref.focus();
+
+    form2.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var reference = ref.value.trim();
+      var phoneValue = phone.value.trim();
+      if (!reference || !phoneValue) {
+        msg.textContent = 'Both fields are needed.';
+        return;
+      }
+      go.disabled = true;
+      msg.textContent = 'Checking…';
+
+      fetch(ENDPOINT + '/status', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ persona: persona, reference: reference, phone: phoneValue })
+      }).then(function (res) {
+        return res.json().catch(function () { return {}; }).then(function (data) {
+          return { status: res.status, data: data };
+        });
+      }).then(function (out) {
+        go.disabled = false;
+        msg.textContent = '';
+        if (out.status === 200 && out.data.found) {
+          addMessage(out.data.text, 'bot');
+          if (out.data.handoff && out.data.handoff.url) showHandoff(out.data.handoff.url);
+          return;
+        }
+        if (out.status === 404) {
+          addMessage(out.data.text || 'We could not find that.', 'note');
+          return;
+        }
+        addMessage((out.data && out.data.message) || 'That check failed. Please try again.', 'error');
+      }).catch(function () {
+        go.disabled = false;
+        msg.textContent = '';
+        addMessage('Could not reach the server. Check your connection and try again.', 'error');
+      });
     });
   }
 

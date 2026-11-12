@@ -64,10 +64,22 @@ test('every persona has at least one record with an ETA and one without', async 
   }
 });
 
+// Accepts either state, because both are legitimate: a fresh clone ships the
+// PLACEHOLDER sentinel, and a configured install has a real number. What must
+// never happen is the two disagreeing, or a malformed number being accepted.
 test('a placeholder WhatsApp number is flagged, never treated as real', async () => {
   clearPersonaCache();
   const p = await loadPersona('food');
-  assert.equal(p.config.whatsappIsPlaceholder, true, 'the shipped sentinel must be flagged');
+  const value = p.config.whatsapp;
+  assert.equal(
+    p.config.whatsappIsPlaceholder,
+    value === 'PLACEHOLDER',
+    'the placeholder flag must match the actual value: ' + value
+  );
+  assert.ok(
+    value === 'PLACEHOLDER' || /^\d{10,15}$/.test(value),
+    'whatsapp must be the sentinel or 10-15 digits, got: ' + value
+  );
 });
 
 test('the identity rule holds: no two personas share a reference', async () => {

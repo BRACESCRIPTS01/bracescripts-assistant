@@ -134,7 +134,12 @@ export default async (request) => {
     reference = validated.value.reference;
   }
   const decision = applyHandoff(validated.value.reply, validated.value.intent, input.wantsHuman, Boolean(reference));
-  const handoffUrl = decision.handoff
+
+  // The model escalating is just as real as the visitor asking. Either one must
+  // produce a working button, or the bot admits it cannot help and leaves the
+  // customer with nowhere to go.
+  const wantsHandoff = decision.handoff || validated.value.intent === 'handoff';
+  const handoffUrl = wantsHandoff
     ? waLink(persona.config, buildHandoffText(persona.config, input.message, reference))
     : null;
 

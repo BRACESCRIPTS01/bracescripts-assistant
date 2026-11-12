@@ -172,3 +172,12 @@ bracescripts-widget *::after { box-sizing: border-box; }
 @media (prefers-reduced-motion: reduce) {
   bracescripts-widget * { animation: none !important; transition: none !important; }
 }
+
+/* Reference + phone mini-form (status lookup) */
+.bs-track { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .5rem; }
+.bs-track input {
+  flex: 1 1 7rem; min-width: 0; font: inherit; font-size: .85rem;
+  padding: .4rem .5rem; border: 1px solid var(--bs-line); border-radius: 6px; color: inherit;
+}
+.bs-track .bs-send { flex: 0 0 auto; font-size: .85rem; padding: .4rem .7rem; }
+.bs-track-msg { margin: .35rem 0 0; font-size: .8rem; color: var(--bs-muted); }
