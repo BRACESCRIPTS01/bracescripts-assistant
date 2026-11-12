@@ -196,16 +196,74 @@
     input.value = '';
     updateCount();
 
-    // Step 4 replaces this stub with the real POST to ENDPOINT + '/chat'.
-    // Step 5 adds the reference-and-phone mini-form for intent "track".
-    var line = addMessage('Sending…', 'bot');
-    setBusy(true);
-    window.setTimeout(function () {
-      line.remove();
-      addMessage('The assistant is not connected yet. This is the Step 2 skeleton — the API arrives in Step 4.', 'note');
-      setBusy(false);
-    }, 250);
+    sendMessage(text);
   });
+
+  function sendMessage(text) {
+    var pending = addMessage('…', 'bot');
+    setBusy(true);
+
+    fetch(ENDPOINT + '/chat', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        persona: persona,
+        message: text,
+        history: history.slice(-MAX_HISTORY)
+      })
+    }).then(function (res) {
+      // Read the status BEFORE the body: Netlify's own rate limit replies 429
+      // with an empty body, so res.json() would throw on it.
+      return res.json().catch(function () { return {}; }).then(function (data) {
+        return { status: res.status, data: data };
+      });
+    }).then(function (out) {
+      pending.remove();
+      setBusy(false);
+
+      if (out.status === 200 && typeof out.data.reply === 'string') {
+        addMessage(out.data.reply, 'bot');
+        history.push({ role: 'user', content: text });
+        history.push({ role: 'assistant', content: out.data.reply });
+        history = history.slice(-MAX_HISTORY);
+        saveHistory();
+        if (out.data.handoff && out.data.handoff.url) showHandoff(out.data.handoff.url);
+        document.dispatchEvent(new CustomEvent('bracescripts:meta', {
+          detail: { provider: out.data.meta && out.data.meta.provider }
+        }));
+        return;
+      }
+
+      var message = (out.data && typeof out.data.message === 'string')
+        ? out.data.message
+        : 'Something went wrong. Please try again, or message us on WhatsApp.';
+      addMessage(message, out.status === 429 ? 'note' : 'error');
+      if (out.data && out.data.handoff && out.data.handoff.url) showHandoff(out.data.handoff.url);
+    }).catch(function () {
+      pending.remove();
+      setBusy(false);
+      addMessage('Could not reach the server. Check your connection and try again.', 'error');
+    });
+  }
+
+  // The WhatsApp link is built by the SERVER. The browser only renders it.
+  function showHandoff(url) {
+    if (text_ok(url) === false) return;
+    var li = el('li', 'bs-msg bs-msg--note');
+    var a = document.createElement('a');
+    a.href = url;
+    a.textContent = 'Message us on WhatsApp';
+    a.rel = 'noopener';
+    a.target = '_blank';
+    li.appendChild(a);
+    log.appendChild(li);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  // Accept only an https wa.me link the server produced.
+  function text_ok(url) {
+    return typeof url === 'string' && /^https:\/\/wa\.me\/\d{10,15}\?/.test(url);
+  }
 
   /* ---- public surface --------------------------------------------------- */
   // The demo page uses these two methods and nothing else.
