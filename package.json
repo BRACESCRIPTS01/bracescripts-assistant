@@ -1,0 +1,14 @@
+{
+  "name": "bracescripts-assistant",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Drop-in business chatbot: answers from an owner-written facts file, tracks by reference + phone, hands off to WhatsApp.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {}
+}

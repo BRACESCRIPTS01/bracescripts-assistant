@@ -1,0 +1,75 @@
+# Netlify build config.
+# publish = "." because index.html sits at the repo root, as specified.
+# That means lib/, tests/, docs/ and business/ would otherwise be PUBLIC.
+# The [[redirects]] block at the bottom is what stops that. Verified 2026-11-09:
+# a forced rewrite to a 404 is how Netlify denies a path that exists on disk.
+
+[build]
+  publish = "."
+  functions = "Netlify/functions"
+
+[functions]
+  directory = "Netlify/functions"
+  # Read at runtime with fs inside the function, so it must be bundled.
+  included_files = ["business/**"]
+  node_bundler = "esbuild"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--no-audit --no-fund"
+
+# --- Deny everything that is not the site -----------------------------------
+# force = true so the rule applies even though the file really exists.
+
+[[redirects]]
+  from = "/lib/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/tests/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/docs/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Client facts and demo data. Never public.
+[[redirects]]
+  from = "/business/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Config and repo files, if the deploy ever exposes them.
+[[redirects]]
+  from = "/netlify.toml"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/README.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# The default /.netlify/functions/ alias would bypass the /api/* rate limit,
+# which is set in each function's config. Deny the alias.
+# PROBE: curl -o /dev/null -w '%{http_code}' -X POST https://SITE/.netlify/functions/chat
+[[redirects]]
+  from = "/.netlify/*"
+  to = "/404.html"
+  status = 404
+  force = true

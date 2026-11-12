@@ -1,0 +1,42 @@
+{
+  "key": "food",
+  "name": "Fatima Spagogo",
+  "label": "Food delivery",
+  "demo": true,
+  "trackingNoun": "order",
+  "referencePattern": "^SPG-\\d{1,6}$",
+  "whatsapp": "PLACEHOLDER",
+  "timezone": "Africa/Lagos",
+  "greeting": "Hello. Ask about the menu, prices or delivery areas. I can also check an order with its reference and phone number.",
+  "statuses": {
+    "scheduled": {
+      "label": "Scheduled",
+      "explanation": "The order was placed outside opening hours, so it is scheduled for the next opening time. The kitchen has not started it yet."
+    },
+    "received": {
+      "label": "Received",
+      "explanation": "Payment is confirmed and the kitchen has your order."
+    },
+    "preparing": {
+      "label": "Preparing",
+      "explanation": "The kitchen is preparing your food now."
+    },
+    "out_for_delivery": {
+      "label": "Out for delivery",
+      "explanation": "Your order has left the kitchen and is on its way to you."
+    },
+    "delivered": {
+      "label": "Delivered",
+      "explanation": "This order was delivered."
+    },
+    "cancelled": {
+      "label": "Cancelled",
+      "explanation": "This order was cancelled. If you did not ask for this, message us on WhatsApp."
+    }
+  },
+  "refusals": [
+    "no dishes outside the menu",
+    "no price negotiation",
+    "no delivery outside Ibafo and Mowe"
+  ]
+}

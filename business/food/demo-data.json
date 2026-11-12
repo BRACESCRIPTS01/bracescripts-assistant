@@ -1,0 +1,45 @@
+[
+  {
+    "reference": "SPG-1001",
+    "phone": "0999000001",
+    "summary": "Chicken spaghetti, medium x1",
+    "status": "out_for_delivery",
+    "etaOffsetMinutes": 20,
+    "updatedAtOffsetMinutes": -6
+  },
+  {
+    "reference": "SPG-1002",
+    "phone": "0999000002",
+    "summary": "Family pack x1",
+    "status": "preparing",
+    "updatedAtOffsetMinutes": -14
+  },
+  {
+    "reference": "SPG-1003",
+    "phone": "0999000003",
+    "summary": "Beef spaghetti x2",
+    "status": "delivered",
+    "updatedAtOffsetMinutes": -1440
+  },
+  {
+    "reference": "SPG-1004",
+    "phone": "0999000004",
+    "summary": "Jollof spaghetti with plantain x2",
+    "status": "scheduled",
+    "updatedAtOffsetMinutes": -600
+  },
+  {
+    "reference": "SPG-1005",
+    "phone": "0999000005",
+    "summary": "Turkey spaghetti x1",
+    "status": "cancelled",
+    "updatedAtOffsetMinutes": -300
+  },
+  {
+    "reference": "SPG-1006",
+    "phone": "0999000006",
+    "summary": "Prawn spaghetti x1",
+    "status": "received",
+    "updatedAtOffsetMinutes": -2
+  }
+]

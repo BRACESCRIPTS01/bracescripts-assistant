@@ -1,0 +1,45 @@
+[
+  {
+    "reference": "TX-4A9F2C",
+    "phone": "0999000001",
+    "summary": "Buy 50,000 NGN of USDT",
+    "status": "awaiting_confirmations",
+    "etaOffsetMinutes": 25,
+    "updatedAtOffsetMinutes": -8
+  },
+  {
+    "reference": "TX-77B1E4",
+    "phone": "0999000002",
+    "summary": "Sell 200,000 NGN of BTC",
+    "status": "processing",
+    "updatedAtOffsetMinutes": -45
+  },
+  {
+    "reference": "TX-C0D5A1",
+    "phone": "0999000003",
+    "summary": "Buy 12,000 NGN of ETH",
+    "status": "completed",
+    "updatedAtOffsetMinutes": -2880
+  },
+  {
+    "reference": "TX-9E33FB",
+    "phone": "0999000004",
+    "summary": "Withdraw 300,000 NGN",
+    "status": "under_review",
+    "updatedAtOffsetMinutes": -180
+  },
+  {
+    "reference": "TX-2B8D07",
+    "phone": "0999000005",
+    "summary": "Buy 5,000 NGN of USDT",
+    "status": "failed",
+    "updatedAtOffsetMinutes": -720
+  },
+  {
+    "reference": "TX-51FA6E",
+    "phone": "0999000006",
+    "summary": "Buy 20,000 NGN of BTC",
+    "status": "received",
+    "updatedAtOffsetMinutes": -3
+  }
+]

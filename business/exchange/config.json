@@ -1,0 +1,43 @@
+{
+  "key": "exchange",
+  "name": "[EXCHANGIFY]",
+  "label": "Demo exchange",
+  "demo": true,
+  "trackingNoun": "transaction",
+  "referencePattern": "^TX-[0-9A-F]{6}$",
+  "whatsapp": "PLACEHOLDER",
+  "timezone": "Africa/Lagos",
+  "greeting": "Hello. Ask about supported assets, fees, KYC limits or withdrawal times. I can also check a transaction with its reference and phone number.",
+  "statuses": {
+    "received": {
+      "label": "Received",
+      "explanation": "We have your transaction and it is waiting to be processed."
+    },
+    "awaiting_confirmations": {
+      "label": "Awaiting network confirmations",
+      "explanation": "The deposit is on the blockchain and we are waiting for the required number of network confirmations before crediting your balance."
+    },
+    "processing": {
+      "label": "Processing",
+      "explanation": "Your transaction is being processed. No action is needed from you."
+    },
+    "under_review": {
+      "label": "Under review",
+      "explanation": "A compliance check is in progress. This is usually finished within 24 hours and needs no action from you unless we contact you."
+    },
+    "completed": {
+      "label": "Completed",
+      "explanation": "This transaction is finished. The amount has been credited or paid out as requested."
+    },
+    "failed": {
+      "label": "Failed",
+      "explanation": "This transaction did not complete. Any amount we received is refunded to the sending details on record; refunds are processed on business days."
+    }
+  },
+  "refusals": [
+    "no investment advice",
+    "no price predictions",
+    "no tax or legal advice",
+    "no live rate quotes — live rates are shown in the app"
+  ]
+}

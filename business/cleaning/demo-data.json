@@ -1,0 +1,45 @@
+[
+  {
+    "reference": "DK-1042",
+    "phone": "0999000001",
+    "summary": "Post-construction clean, 3-bedroom duplex",
+    "status": "team_on_the_way",
+    "etaOffsetMinutes": 40,
+    "updatedAtOffsetMinutes": -5
+  },
+  {
+    "reference": "DK-1043",
+    "phone": "0999000002",
+    "summary": "Maintenance clean, weekly",
+    "status": "confirmed",
+    "updatedAtOffsetMinutes": -120
+  },
+  {
+    "reference": "DK-1044",
+    "phone": "0999000003",
+    "summary": "Upholstery cleaning, 6-seater",
+    "status": "inspection_scheduled",
+    "updatedAtOffsetMinutes": -60
+  },
+  {
+    "reference": "DK-1045",
+    "phone": "0999000004",
+    "summary": "Fumigation, 2-bedroom flat",
+    "status": "quoted",
+    "updatedAtOffsetMinutes": -240
+  },
+  {
+    "reference": "DK-1046",
+    "phone": "0999000005",
+    "summary": "Outsourced cleaner placement",
+    "status": "requested",
+    "updatedAtOffsetMinutes": -18
+  },
+  {
+    "reference": "DK-1047",
+    "phone": "0999000006",
+    "summary": "Carpet cleaning, office floor",
+    "status": "cancelled",
+    "updatedAtOffsetMinutes": -480
+  }
+]

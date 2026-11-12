@@ -1,0 +1,50 @@
+{
+  "key": "cleaning",
+  "name": "DelaKlean",
+  "label": "Cleaning company",
+  "demo": true,
+  "trackingNoun": "booking",
+  "referencePattern": "^DK-\\d{4}$",
+  "whatsapp": "PLACEHOLDER",
+  "timezone": "Africa/Lagos",
+  "greeting": "Hello. Ask about cleaning services or how pricing works. I can also check a booking with its reference and phone number.",
+  "statuses": {
+    "requested": {
+      "label": "Requested",
+      "explanation": "We have your request and will contact you to arrange an inspection."
+    },
+    "inspection_scheduled": {
+      "label": "Inspection scheduled",
+      "explanation": "An inspection is booked so we can see the space and quote accurately."
+    },
+    "quoted": {
+      "label": "Quoted",
+      "explanation": "We have sent you a quote. The booking is confirmed once you accept it and pay the deposit."
+    },
+    "confirmed": {
+      "label": "Confirmed",
+      "explanation": "Your booking is confirmed and a team is assigned to it."
+    },
+    "team_on_the_way": {
+      "label": "Team on the way",
+      "explanation": "The cleaning team has left and is on the way to you."
+    },
+    "in_progress": {
+      "label": "In progress",
+      "explanation": "The team is cleaning now."
+    },
+    "completed": {
+      "label": "Completed",
+      "explanation": "This job is finished. Tell us on WhatsApp if anything was missed."
+    },
+    "cancelled": {
+      "label": "Cancelled",
+      "explanation": "This booking was cancelled. Message us on WhatsApp if you did not ask for this."
+    }
+  },
+  "refusals": [
+    "no firm price without an inspection",
+    "no booking confirmed before the deposit is paid",
+    "no service outside the 36 states listed"
+  ]
+}

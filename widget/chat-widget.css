@@ -1,0 +1,174 @@
+/* Widget styles. Scoped to bracescripts-widget. Accent via CSS custom property. */
+
+bracescripts-widget {
+  --bs-accent: #62110c;
+  --bs-ink: #14181f;
+  --bs-muted: #5a6472;
+  --bs-line: #dfe4ea;
+  --bs-radius: 12px;
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 2147483000;
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color: var(--bs-ink);
+}
+
+bracescripts-widget *,
+bracescripts-widget *::before,
+bracescripts-widget *::after { box-sizing: border-box; }
+
+/* Launcher ---------------------------------------------------------------- */
+.bs-launcher {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  padding: .7rem 1rem;
+  border: 1px solid var(--bs-accent);
+  border-radius: 999px;
+  background: var(--bs-accent);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .16);
+}
+.bs-launcher:hover { filter: brightness(1.06); }
+.bs-launcher:focus-visible,
+.bs-panel button:focus-visible,
+.bs-panel input:focus-visible,
+.bs-panel textarea:focus-visible,
+.bs-panel a:focus-visible {
+  outline: 2px solid var(--bs-accent);
+  outline-offset: 2px;
+}
+
+/* Panel ------------------------------------------------------------------- */
+.bs-panel {
+  position: absolute;
+  right: 0;
+  bottom: 3.6rem;
+  width: min(22rem, calc(100vw - 2rem));
+  max-height: min(70vh, 34rem);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--bs-line);
+  border-radius: var(--bs-radius);
+  box-shadow: 0 10px 34px rgba(0, 0, 0, .18);
+  overflow: hidden;
+}
+.bs-panel[hidden] { display: none; }
+
+.bs-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  padding: .6rem .75rem;
+  border-bottom: 1px solid var(--bs-line);
+  background: var(--bs-accent);
+  color: #fff;
+}
+.bs-title { font-weight: 600; font-size: .92rem; }
+.bs-close {
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, .5);
+  color: #fff;
+  border-radius: 6px;
+  padding: .2rem .45rem;
+}
+
+.bs-log {
+  list-style: none;
+  margin: 0;
+  padding: .7rem;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.bs-msg {
+  max-width: 88%;
+  padding: .5rem .65rem;
+  border-radius: 10px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: .9rem;
+}
+.bs-msg--bot { background: #f2f5fa; align-self: flex-start; }
+.bs-msg--me { background: var(--bs-accent); color: #fff; align-self: flex-end; }
+.bs-msg--note {
+  background: #fff8e6;
+  border: 1px solid #e8c86a;
+  align-self: stretch;
+  font-size: .86rem;
+  color: #6b4a00;
+}
+.bs-msg--error {
+  background: #fdf0ef;
+  border: 1px solid #e0a5a1;
+  align-self: stretch;
+  font-size: .86rem;
+  color: #7d1d19;
+}
+
+.bs-form {
+  display: flex;
+  gap: .4rem;
+  padding: .6rem;
+  border-top: 1px solid var(--bs-line);
+}
+.bs-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  font: inherit;
+  font-size: .9rem;
+  padding: .5rem .6rem;
+  border: 1px solid var(--bs-line);
+  border-radius: 8px;
+  color: inherit;
+  resize: none;
+}
+.bs-send {
+  font: inherit;
+  font-weight: 600;
+  font-size: .9rem;
+  cursor: pointer;
+  padding: .5rem .8rem;
+  border-radius: 8px;
+  border: 1px solid var(--bs-accent);
+  background: var(--bs-accent);
+  color: #fff;
+}
+.bs-send[disabled] { opacity: .55; cursor: default; }
+
+.bs-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: .5rem;
+  padding: 0 .7rem .5rem;
+  font-size: .74rem;
+  color: var(--bs-muted);
+}
+.bs-count-over { color: #a3241f; font-weight: 600; }
+
+/* Phone-sized ------------------------------------------------------------- */
+@media (max-width: 420px) {
+  bracescripts-widget { right: .6rem; bottom: .6rem; left: .6rem; }
+  .bs-panel {
+    width: auto;
+    left: 0;
+    right: 0;
+    max-height: 76vh;
+  }
+  .bs-launcher { margin-left: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  bracescripts-widget * { animation: none !important; transition: none !important; }
+}

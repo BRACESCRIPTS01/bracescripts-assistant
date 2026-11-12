@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BraceScripts Assistant — demo</title>
+<meta name="description" content="A drop-in chatbot for small businesses. Answers only from the owner's facts file, tracks an order by reference and phone, hands off to WhatsApp.">
+<link rel="stylesheet" href="/demo.css">
+<link rel="stylesheet" href="/widget/chat-widget.css">
+</head>
+<body>
+<header class="bar">
+  <div class="wrap bar-in">
+    <span class="brand">BraceScripts Assistant</span>
+    <span class="tag">demo build</span>
+  </div>
+</header>
+
+<main>
+  <section class="wrap hero">
+    <h1>The same chatbot, three businesses.</h1>
+    <p class="lede">Switch persona below. The code does not change — only the facts file and the config in <code>business/</code>. That is the whole pitch: installing it for a new client is content work, not code work.</p>
+
+    <div class="switch" role="group" aria-label="Choose a demo business">
+      <button type="button" class="pill" data-persona="exchange" aria-pressed="false">Exchange</button>
+      <button type="button" class="pill" data-persona="food" aria-pressed="false">Food delivery</button>
+      <button type="button" class="pill" data-persona="cleaning" aria-pressed="false">Cleaning</button>
+    </div>
+
+    <p id="demo-note" class="note">Every persona on this page is a demonstration. Prices, hours and order records are sample data, not a live business — except where a real business is named, and then only the facts they supplied.</p>
+  </section>
+
+  <section class="wrap grid">
+    <article class="card">
+      <h2>What it does</h2>
+      <ul>
+        <li>Answers only from a facts file the owner writes. If the answer is not there, it says so.</li>
+        <li>Checks an order, booking or transaction by reference <em>and</em> phone. Both must match.</li>
+        <li>Hands over to WhatsApp with the context pre-filled when it cannot help.</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <h2>What it never does</h2>
+      <ul>
+        <li>It does not invent prices, times or policies. A missing fact is a refusal, not a guess.</li>
+        <li>It cannot take payments, change records or grant access. It has no such ability.</li>
+        <li>It never asks for card numbers, OTPs, PINs, passwords or seed phrases.</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <h2>Try it</h2>
+      <p class="sub">Sample questions for the selected business:</p>
+      <div id="samples" class="samples"></div>
+      <p class="sub" id="provider-note">Answers are produced by a language model that can see only the facts file.</p>
+    </article>
+  </section>
+
+  <section class="wrap install">
+    <h2>Install on any site</h2>
+    <p>One script tag. Same-origin or cross-origin.</p>
+    <pre><code>&lt;script src="/widget/chat-widget.js"
+  data-endpoint="/api"
+  data-persona="food"
+  data-accent="#62110c"
+  defer&gt;&lt;/script&gt;</code></pre>
+    <p class="sub">The full procedure, including the two Netlify environment variables a client site needs, is in <code>docs/INSTALL.md</code>. It is not published on this page by design — this page is the demo, not the documentation.</p>
+  </section>
+</main>
+
+<footer class="wrap foot">
+  <p>BraceScripts Assistant. Built for small businesses in Nigeria. Demo data throughout.</p>
+  <p class="sub">No tracking scripts, no analytics, no third-party fonts. One page, two files, no framework.</p>
+</footer>
+
+<script src="/demo.js" defer></script>
+<script src="/widget/chat-widget.js"
+        data-endpoint="/api"
+        data-persona="food"
+        data-accent="#62110c"
+        defer></script>
+</body>
+</html>

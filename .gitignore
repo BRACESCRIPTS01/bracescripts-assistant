@@ -1,0 +1,6 @@
+# Secrets and build output. Keys live only in Netlify environment variables.
+.env
+.env.*
+.netlify/
+node_modules/
+.DS_Store
