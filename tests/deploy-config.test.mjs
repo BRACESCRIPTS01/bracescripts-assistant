@@ -31,6 +31,9 @@ test('every path that must not be public is forced to a 404', () => {
     '/lib/*', '/tests/*', '/docs/*', '/business/*',
     '/netlify.toml', '/package.json', '/README.md', '/_headers',
     '/.netlify/*',
+    // publish = "." also puts the function SOURCE on the CDN, served as
+    // JavaScript. Found public on a real deploy 2026-11-12.
+    '/netlify/*', '/Netlify/*',
   ];
   for (const path of mustHide) {
     const rule = rules.find((r) => r.from === path);
@@ -56,6 +59,29 @@ test('every markdown file at the repo root has its own deny rule', async () => {
     assert.ok(rule, file + ' is public and has no deny rule in netlify.toml');
     assert.equal(rule.status, 404, file + ' must return 404');
     assert.equal(rule.force, true, file + ' needs force = true');
+  }
+});
+
+// publish = "." means every file in the repo is a candidate for the CDN. This
+// test enumerates the top-level directories that exist and demands a deny rule
+// for each, so a new folder cannot quietly become public.
+test('every top-level directory in the repo is denied except public assets', async () => {
+  const { readdir } = await import('node:fs/promises');
+  const root = new URL('../', import.meta.url);
+  const entries = await readdir(root, { withFileTypes: true });
+
+  // These two ARE the site. Everything else is source.
+  const PUBLIC = new Set(['widget']);
+  const dirs = entries.filter((e) => e.isDirectory() && !e.name.startsWith('.')).map((e) => e.name);
+
+  for (const dir of dirs) {
+    if (PUBLIC.has(dir)) continue;
+    const lower = '/' + dir.toLowerCase() + '/*';
+    const exact = '/' + dir + '/*';
+    const rule = rules.find((r) => (r.from || '').toLowerCase() === lower || r.from === exact);
+    assert.ok(rule, '/' + dir + '/ is published and has no deny rule in netlify.toml');
+    assert.equal(rule.status, 404);
+    assert.equal(rule.force, true);
   }
 });
 

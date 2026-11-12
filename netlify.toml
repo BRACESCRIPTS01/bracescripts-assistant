@@ -83,6 +83,23 @@
   status = 404
   force = true
 
+# The function SOURCE is also published, because publish = "." puts the whole
+# repo on the CDN. Netlify serves it as application/javascript. It holds no
+# secret (keys come from the environment) but it is the router, the rate-limit
+# config and the validation order in one readable file. Not public.
+# PROBE: curl -o /dev/null -w '%{http_code}' https://SITE/netlify/functions/chat.mjs
+[[redirects]]
+  from = "/netlify/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/Netlify/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
 [[redirects]]
   from = "/_headers"
   to = "/404.html"
