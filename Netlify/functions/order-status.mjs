@@ -36,7 +36,7 @@ export default async (request) => {
     return json(400, { error: body.reason, message: 'That request could not be read.' }, corsHeaders(request));
   }
 
-  const input = validateStatusInput(body.value);
+  const input = await validateStatusInput(body.value);
   if (!input.ok) {
     return json(400, { error: input.reason, message: 'Please enter a reference number and a phone number.' },
       corsHeaders(request));

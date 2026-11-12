@@ -1,5 +1,6 @@
-// Drop-in chat widget, vanilla JS, no dependencies. UI only in this step —
-// the fetch calls to /api/chat and /api/status are wired in Steps 4 and 5.
+// Drop-in chat widget, vanilla JS, no dependencies. Calls /api/chat for answers
+// and /api/status for order lookup. Renders text with textContent only, never
+// innerHTML, so a model reply cannot inject markup.
 // Reads data-endpoint, data-persona, data-accent from its own script tag.
 
 (function () {
@@ -13,8 +14,18 @@
   var MAX_MESSAGE = 500;
   var MAX_HISTORY = 6;
 
-  var PERSONAS = ['exchange', 'food', 'cleaning'];
-  var persona = PERSONAS.indexOf(script.dataset.persona) !== -1 ? script.dataset.persona : 'food';
+  // A client is a folder under business/ on the server. The widget does not
+  // keep its own copy of that list: it accepts a plain folder-style name and
+  // lets the server reject anything unknown with a 400. The three demo names
+  // are kept only so the demo page's switcher knows what it can show.
+  var DEMO_PERSONAS = ['exchange', 'food', 'cleaning'];
+  var NAME_RE = /^[a-z0-9][a-z0-9-]{1,38}[a-z0-9]$/;
+
+  function claimedPersona(value) {
+    return typeof value === 'string' && NAME_RE.test(value) ? value : 'food';
+  }
+
+  var persona = claimedPersona(script.dataset.persona);
 
   /* ---- state ------------------------------------------------------------ */
   // History lives in memory and in sessionStorage, per persona. It holds no
@@ -147,7 +158,7 @@
   }
 
   function setPersona(next) {
-    if (PERSONAS.indexOf(next) === -1) return;
+    if (DEMO_PERSONAS.indexOf(next) === -1) return;
     persona = next;
     history = loadHistory();
   }

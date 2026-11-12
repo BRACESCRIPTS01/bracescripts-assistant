@@ -59,7 +59,7 @@ export default async (request) => {
     });
   }
 
-  const input = validateChatInput(body.value);
+  const input = await validateChatInput(body.value);
   if (!input.ok) {
     const status = input.reason === 'message_too_long' ? 413 : 400;
     const message = input.reason === 'message_too_long'

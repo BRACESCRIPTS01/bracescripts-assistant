@@ -65,6 +65,22 @@
   status = 404
   force = true
 
+# Internal build notes. These held design reasoning and client detail and were
+# being served as plain text to anyone who asked. PROBE after deploy:
+#   curl -o /dev/null -w '%{http_code}' https://SITE/STEP-1-PLAN.md   # expect 404
+#   curl -o /dev/null -w '%{http_code}' https://SITE/docs/README.md   # expect 404
+[[redirects]]
+  from = "/*.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/_headers"
+  to = "/404.html"
+  status = 404
+  force = true
+
 # The default /.netlify/functions/ alias would bypass the /api/* rate limit,
 # which is set in each function's config. Deny the alias.
 # PROBE: curl -o /dev/null -w '%{http_code}' -X POST https://SITE/.netlify/functions/chat

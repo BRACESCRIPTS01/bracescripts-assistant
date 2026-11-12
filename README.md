@@ -9,9 +9,11 @@ A drop-in website chatbot that does three things and nothing else:
 The same code runs three demonstration businesses on one page — that is the
 proof that installing it for a new client is content work, not code work.
 
-**Step 2 of 8 — skeleton.** The page, the widget and the persona files are in
-place. The API is not built yet; the widget says so plainly when you type.
-`lib/`, `tests/` and `docs/` are populated in Steps 3 to 8.
+**Status: working, deployed.** Three demo businesses, live model answers, order
+lookup, and WhatsApp handoff. 99 tests, no dependencies.
+
+Docs: [`docs/HANDOVER.md`](docs/HANDOVER.md) for the owner,
+[`docs/ADVERSARIAL.md`](docs/ADVERSARIAL.md) for the pre-launch checklist.
 
 ## Run it
 
@@ -57,11 +59,24 @@ build step, no npm dependencies. Node built-ins only.
 | `business/<persona>/` | `config.json`, `facts.md`, `demo-data.json` per business |
 | `Netlify/functions/` | `chat.mjs`, `order-status.mjs` |
 | `lib/` | Shared modules |
-| `tests/` | `node --test` unit tests and a manual adversarial checklist |
-| `docs/` | Install, facts authoring, data connection, handover, gig text |
+| `tests/` | `node --test` unit tests |
+| `docs/` | `HANDOVER.md` (owner-facing) and `ADVERSARIAL.md` (pre-launch checks) |
 | `_headers`, `netlify.toml` | Security headers and routing |
+
+## Adding a client
+
+A client is a folder: `business/<name>/` with `config.json`, `facts.md` and
+`demo-data.json`. Nothing else changes — no code edit, no redeploy of the logic.
+The folder name is the `data-persona` the widget sends, and the server only
+accepts names that exist on disk, so a request can never name a path.
 
 ## Limits, stated plainly
 
-Two free-tier model keys have daily caps that a busy demo can reach. When they
-are reached the widget says so and offers WhatsApp — it does not fail silently.
+- Free-tier model keys have daily caps that a busy demo can reach. When they are
+  reached the widget says so and offers WhatsApp — it does not fail silently.
+- The rate limiter is in memory, per server instance. It stops a casual script,
+  not a determined attacker.
+- Groq failover is configured but never exercised, because no `GROQ_API_KEY` is
+  set. Without it, an exhausted Gemini quota means "I cannot answer right now"
+  rather than a fallback answer.
+- Order statuses come from a static JSON file. Nothing polls a real system.
