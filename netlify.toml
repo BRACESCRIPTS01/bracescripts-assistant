@@ -65,12 +65,20 @@
   status = 404
   force = true
 
-# Internal build notes. These held design reasoning and client detail and were
-# being served as plain text to anyone who asked. PROBE after deploy:
+# Internal build notes, one rule each. Netlify only accepts a splat at the END
+# of a path, so a pattern like "/*.md" is silently ineffective - it was tried on
+# 2026-11-12 and the files stayed public. A test enumerates the root *.md files
+# and fails if one of them has no rule here, so this list cannot go stale.
+# PROBE after deploy:
 #   curl -o /dev/null -w '%{http_code}' https://SITE/STEP-1-PLAN.md   # expect 404
-#   curl -o /dev/null -w '%{http_code}' https://SITE/docs/README.md   # expect 404
 [[redirects]]
-  from = "/*.md"
+  from = "/STEP-1-PLAN.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/ARCHITECTURE-V2-WHATSAPP.md"
   to = "/404.html"
   status = 404
   force = true

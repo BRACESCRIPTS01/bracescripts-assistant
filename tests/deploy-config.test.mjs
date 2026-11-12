@@ -4,16 +4,19 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 
 const toml = await readFile(new URL('../netlify.toml', import.meta.url), 'utf8');
 const headers = await readFile(new URL('../_headers', import.meta.url), 'utf8');
 
 // Minimal read of the [[redirects]] blocks. A full TOML parser is not worth a
 // dependency for four keys.
+// Note: the FIRST split fragment is whatever text preceded the first
+// [[redirects]] header. It is the file's opening comment block, which mentions
+// the word "redirects" - so it must be dropped, not parsed.
 function redirects(text) {
-  const blocks = text.split('[[redirects]]').slice(1);
-  return blocks.map((b) => {
+  const blocks = text.split('\n[[redirects]]\n').slice(1);
+  return blocks.filter((b) => /from\s*=/.test(b)).map((b) => {
     const from = b.match(/from\s*=\s*"([^"]+)"/);
     const status = b.match(/status\s*=\s*(\d+)/);
     const force = /force\s*=\s*true/.test(b);
@@ -27,7 +30,7 @@ test('every path that must not be public is forced to a 404', () => {
   const mustHide = [
     '/lib/*', '/tests/*', '/docs/*', '/business/*',
     '/netlify.toml', '/package.json', '/README.md', '/_headers',
-    '/*.md', '/.netlify/*',
+    '/.netlify/*',
   ];
   for (const path of mustHide) {
     const rule = rules.find((r) => r.from === path);
@@ -37,11 +40,35 @@ test('every path that must not be public is forced to a 404', () => {
   }
 });
 
-test('a markdown file at the root is caught by the *.md rule, not by its own name', () => {
-  // STEP-1-PLAN.md and ARCHITECTURE-V2-WHATSAPP.md were public on a real deploy.
-  // Naming them one by one would miss the next file someone adds.
-  const md = rules.find((r) => r.from === '/*.md');
-  assert.ok(md, 'the catch-all markdown rule is the actual protection');
+// Netlify accepts a splat only at the end of a path. A rule like "/*.md" is
+// silently ignored — it was written on 2026-11-12 and the files stayed public.
+// So every markdown file at the root needs its own rule, and this test is what
+// stops the list going stale when someone adds a document.
+test('every markdown file at the repo root has its own deny rule', async () => {
+  const root = new URL('../', import.meta.url);
+  const entries = await readdir(root);
+  const markdown = entries.filter((f) => f.endsWith('.md'));
+
+  assert.ok(markdown.length > 0, 'sanity: there are markdown files at the root');
+
+  for (const file of markdown) {
+    const rule = rules.find((r) => r.from === '/' + file);
+    assert.ok(rule, file + ' is public and has no deny rule in netlify.toml');
+    assert.equal(rule.status, 404, file + ' must return 404');
+    assert.equal(rule.force, true, file + ' needs force = true');
+  }
+});
+
+test('no redirect rule relies on a mid-path splat, which Netlify ignores', () => {
+  for (const rule of rules) {
+    assert.ok(rule.from, 'every redirect needs a from');
+    const splat = rule.from.indexOf('*');
+    const lastChar = rule.from.length - 1;
+    assert.ok(
+      splat === -1 || splat === lastChar,
+      rule.from + ' has a splat that is not at the end, so Netlify will not match it',
+    );
+  }
 });
 
 test('the function alias cannot bypass the rate limit', () => {
