@@ -5,7 +5,7 @@
   "demo": true,
   "trackingNoun": "order",
   "referencePattern": "^SPG-\\d{1,6}$",
-  "whatsapp": "PLACEHOLDER",
+  "whatsapp": "2348183981160",
   "timezone": "Africa/Lagos",
   "greeting": "Hello. Ask about the menu, prices or delivery areas. I can also check an order with its reference and phone number.",
   "statuses": {

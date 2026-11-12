@@ -5,7 +5,7 @@
   "demo": true,
   "trackingNoun": "booking",
   "referencePattern": "^DK-\\d{4}$",
-  "whatsapp": "PLACEHOLDER",
+  "whatsapp": "2348183981160",
   "timezone": "Africa/Lagos",
   "greeting": "Hello. Ask about cleaning services or how pricing works. I can also check a booking with its reference and phone number.",
   "statuses": {

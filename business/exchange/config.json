@@ -5,7 +5,7 @@
   "demo": true,
   "trackingNoun": "transaction",
   "referencePattern": "^TX-[0-9A-F]{6}$",
-  "whatsapp": "PLACEHOLDER",
+  "whatsapp": "2348183981160",
   "timezone": "Africa/Lagos",
   "greeting": "Hello. Ask about supported assets, fees, KYC limits or withdrawal times. I can also check a transaction with its reference and phone number.",
   "statuses": {
